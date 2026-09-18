@@ -33,7 +33,7 @@ const dbConfig = {
     }
 };
 
-app.get('/', (req, res) => {
+app.get('/tema', (req, res) => {
     res.send(`
     <!DOCTYPE html>
     <html lang="pt-BR">
