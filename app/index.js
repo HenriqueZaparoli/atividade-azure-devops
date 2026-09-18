@@ -21,19 +21,20 @@ const sql = require('mssql');
 const app = express();
 const port = process.env.PORT || 8080;
 
-// Configuração do Banco de Dados (Os alunos devem preencher as variáveis no Azure WebApp)
+// Configuração do Banco de Dados
 const dbConfig = {
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
-    server: process.env.DB_SERVER, // Ex: meuserver.database.windows.net
+    server: process.env.DB_SERVER,
     database: process.env.DB_NAME,
     options: {
-        encrypt: true, // Necessário para Azure SQL
+        encrypt: true,
         trustServerCertificate: false
     }
 };
 
-app.get('/tema', (req, res) => {
+// Página inicial (era a rota /tema duplicada — agora é a home "/")
+app.get('/', (req, res) => {
     res.send(`
     <!DOCTYPE html>
     <html lang="pt-BR">
@@ -109,12 +110,11 @@ app.get('/tema', (req, res) => {
     `);
 });
 
+// Rota que realmente consulta o banco
 app.get('/tema', async (req, res) => {
     try {
-        // ALUNOS: Usem a configuração dbConfig para conectar no banco e fazer o SELECT na tabela do tema escolhido!
         await sql.connect(dbConfig);
-        const result = await sql.query`SELECT * FROM NomeDaSuaTabela`; // ALTERAR AQUI!
-        
+        const result = await sql.query`SELECT * FROM Times`;
         res.json(result.recordset);
     } catch (err) {
         console.error("Erro ao conectar no banco:", err);
